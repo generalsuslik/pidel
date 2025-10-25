@@ -1,7 +1,7 @@
 package com.pidel.repository;
 
-import com.pidel.entity.Pizza;
+import com.pidel.entity.PizzaSize;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PizzaSizeRepository extends JpaRepository<Pizza, Long> {
+public interface PizzaSizeRepository extends JpaRepository<PizzaSize, Long> {
 }
