@@ -47,8 +47,22 @@ public class PizzaServiceImpl implements PizzaService {
     @Override
     @Transactional
     public Pizza updatePizza(Long id, Pizza pizza) {
-        deletePizza(id);
-        return pizzaRepository.save(pizza);
+        return pizzaRepository.findById(id)
+                .map(pizzaToUpdate -> {
+                    pizzaToUpdate.setName(pizza.getName());
+                    pizzaToUpdate.setDescription(pizza.getDescription());
+                    pizzaToUpdate.setPrice(pizza.getPrice());
+                    pizzaToUpdate.setPizzaSize(pizza.getPizzaSize());
+                    pizzaToUpdate.setIngredients(pizza.getIngredients());
+                    pizzaToUpdate.setFat(pizza.getFat());
+                    pizzaToUpdate.setKcal(pizza.getKcal());
+                    pizzaToUpdate.setProtein(pizza.getProtein());
+                    return pizzaRepository.save(pizzaToUpdate);
+                })
+                .orElseGet(() -> {
+                    pizza.setId(id);
+                    return createPizza(pizza);
+                });
     }
 
     @Override

@@ -55,19 +55,31 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User updateUser(Long id, User userToUpdate) {
+    public User createAdmin(@NonNull RegistrationUserDto userDto) {
+        var user = User.builder()
+                .username(userDto.getUsername())
+                .password(passwordEncoder.encode(userDto.getPassword()))
+                .name(userDto.getName())
+                .bonuses(0)
+                .roles(roleService.findAll())
+                .build();
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(Long id, User user) {
         return userRepository.findById(id)
-                .map(user -> {
-                    user.setUsername(userToUpdate.getUsername());
-                    user.setPassword(userToUpdate.getPassword());
-                    user.setBonuses(userToUpdate.getBonuses());
-                    user.setName(userToUpdate.getName());
-                    user.setRoles(userToUpdate.getRoles());
-                    return userRepository.save(user);
+                .map(userToUpdate -> {
+                    userToUpdate.setUsername(user.getUsername());
+                    userToUpdate.setPassword(user.getPassword());
+                    userToUpdate.setBonuses(user.getBonuses());
+                    userToUpdate.setName(user.getName());
+                    userToUpdate.setRoles(user.getRoles());
+                    return userRepository.save(userToUpdate);
                 })
                 .orElseGet(() -> {
-                    userToUpdate.setId(id);
-                    return userRepository.save(userToUpdate);
+                    user.setId(id);
+                    return userRepository.save(user);
                 });
     }
 

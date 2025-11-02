@@ -11,7 +11,8 @@ public interface UserService {
     User findById(Long id);
     User findByUsername(String username);
     User createUser(RegistrationUserDto userDto);
-    User updateUser(Long id, User userToUpdate);
+    User createAdmin(RegistrationUserDto userDto);
+    User updateUser(Long id, User user);
     User addRole(Long userId, Long roleId);
     void deleteUser(Long id);
     UserDetails loadUserByUsername(String username);

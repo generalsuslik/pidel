@@ -9,7 +9,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 @OpenAPIDefinition(
         info = @Info(
                 title = "pidel (ПицДос) api",
-                description = "pidel", version = "1.0.0",
+                description = "pidel",
                 contact = @Contact(
                         name = "general suslik",
                         url = "https://github.com/generalsuslik"

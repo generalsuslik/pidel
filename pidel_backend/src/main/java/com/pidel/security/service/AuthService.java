@@ -1,5 +1,6 @@
 package com.pidel.security.service;
 
+import com.pidel.entity.User;
 import com.pidel.security.dto.AuthResponseDto;
 import com.pidel.security.dto.AuthUserDto;
 import com.pidel.security.dto.RegistrationUserDto;
@@ -23,11 +24,12 @@ public class AuthService {
 
     public AuthResponseDto register(RegistrationUserDto request) {
         var user = userService.createUser(request);
-        String jwtToken = jwtTokenUtils.generateToken(user);
-        return AuthResponseDto.builder()
-                .username(user.getUsername())
-                .token(jwtToken)
-                .build();
+        return generateResponse(user);
+    }
+
+    public AuthResponseDto registerAdmin(RegistrationUserDto request) {
+        var user = userService.createAdmin(request);
+        return generateResponse(user);
     }
 
     public AuthResponseDto authenticate(AuthUserDto request) {
@@ -42,6 +44,14 @@ public class AuthService {
         String jwtToken = jwtTokenUtils.generateToken(userDetails);
         return AuthResponseDto.builder()
                 .username(userDetails.getUsername())
+                .token(jwtToken)
+                .build();
+    }
+
+    private AuthResponseDto generateResponse(User user) {
+        String jwtToken = jwtTokenUtils.generateToken(user);
+        return AuthResponseDto.builder()
+                .username(user.getUsername())
                 .token(jwtToken)
                 .build();
     }

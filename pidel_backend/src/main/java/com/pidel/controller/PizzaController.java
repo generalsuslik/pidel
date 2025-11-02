@@ -13,11 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 public class PizzaController {
 
-    private PizzaService pizzaService;
+    private final PizzaService pizzaService;
 
     @GetMapping
     @Operation(
-            summary = "Return list of all pizzas"
+            summary = "Get list of all pizzas"
     )
     public List<Pizza> getAllPizzas() {
         return pizzaService.findAll();
@@ -25,7 +25,7 @@ public class PizzaController {
 
     @GetMapping("/{pizzaId}")
     @Operation(
-            summary = "Return pizza with id = pizzaId"
+            summary = "Get pizza with id = pizzaId"
     )
     public Pizza getPizza(@PathVariable("pizzaId") Long pizzaId) {
         return pizzaService.findById(pizzaId);
