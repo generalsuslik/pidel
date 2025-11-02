@@ -37,7 +37,7 @@ public class UserController {
             summary = "Return user with phone number = phoneNumber"
     )
     public User getUserByPhone(@PathVariable("phoneNumber") String phoneNumber) {
-        return userService.findByPhone(phoneNumber);
+        return userService.findByUsername(phoneNumber);
     }
 
     @PostMapping("/delete/{userId}")

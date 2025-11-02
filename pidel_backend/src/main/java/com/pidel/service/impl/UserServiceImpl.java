@@ -2,17 +2,26 @@ package com.pidel.service.impl;
 
 import com.pidel.entity.User;
 import com.pidel.repository.UserRepository;
+import com.pidel.security.dto.RegistrationUserDto;
+import com.pidel.service.RoleService;
 import com.pidel.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+
+    private final RoleService roleService;
 
     @Override
     public List<User> findAll() {
@@ -27,13 +36,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findByPhone(String phone) {
-        return userRepository
-                .findByPhoneNumber(phone)
-                .orElseThrow();
-    }
-
-    @Override
     public User findByUsername(String username) {
         return userRepository
                 .findByUsername(username)
@@ -41,12 +43,57 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(User user) {
-        userRepository.save(user);
+    public User createUser(@NonNull RegistrationUserDto userDto) {
+        var user = User.builder()
+                .username(userDto.getUsername())
+                .password(passwordEncoder.encode(userDto.getPassword()))
+                .name(userDto.getName())
+                .bonuses(0)
+                .roles(List.of(roleService.defaultRole()))
+                .build();
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User updateUser(Long id, User userToUpdate) {
+        return userRepository.findById(id)
+                .map(user -> {
+                    user.setUsername(userToUpdate.getUsername());
+                    user.setPassword(userToUpdate.getPassword());
+                    user.setBonuses(userToUpdate.getBonuses());
+                    user.setName(userToUpdate.getName());
+                    user.setRoles(userToUpdate.getRoles());
+                    return userRepository.save(user);
+                })
+                .orElseGet(() -> {
+                    userToUpdate.setId(id);
+                    return userRepository.save(userToUpdate);
+                });
+    }
+
+    @Override
+    public User addRole(Long userId, Long roleId) {
+        return userRepository.findById(userId)
+                .map(user -> {
+                    user.getRoles().add(roleService.findById(roleId));
+                    return userRepository.save(user);
+                })
+                .orElseThrow();
     }
 
     @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) {
+        User user = findByUsername(username);
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                List.of()
+        );
     }
 }

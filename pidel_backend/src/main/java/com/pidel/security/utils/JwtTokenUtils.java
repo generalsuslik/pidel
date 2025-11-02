@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -23,22 +22,19 @@ public class JwtTokenUtils {
     @Value("${jwt.lifetime}")
     private Duration jwtLifetime;
 
-    public String generateToken(UserDetails userDetails) {
-        Map<String, Object> claims = new HashMap<>();
-        List<String> rolesList = new ArrayList<>();
-        for (GrantedAuthority grantedAuthority : userDetails.getAuthorities()) {
-            String authority = grantedAuthority.getAuthority();
-            rolesList.add(authority);
-        }
-
-        claims.put("roles", rolesList);
-
+    public String generateToken(UserDetails user) {
         Date issuedDate = new Date();
         Date expirationDate = new Date(issuedDate.getTime() + jwtLifetime.toMillis());
 
+        Map<String, Object> claims = new HashMap<>();
+        List<String> roles = new ArrayList<>();
+        user.getAuthorities().forEach(authority -> roles.add(authority.getAuthority()));
+
+        claims.put("roles", roles);
+
         return Jwts.builder()
                 .claims(claims)
-                .subject(userDetails.getUsername())
+                .subject(user.getUsername())
                 .issuedAt(issuedDate)
                 .expiration(expirationDate)
                 .signWith(generateSecretKey())
@@ -46,7 +42,6 @@ public class JwtTokenUtils {
     }
 
     public String getUsername(String token) {
-
         return getAllClaimsFromToken(token).getSubject();
     }
 
@@ -56,12 +51,10 @@ public class JwtTokenUtils {
     }
 
     private boolean isTokenExpired(String token) {
-
         return getTokenExpiration(token).before(new Date());
     }
 
     private Date getTokenExpiration(String token) {
-
         return getClaim(token, Claims::getExpiration);
     }
 

@@ -5,10 +5,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -23,24 +20,31 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Stores phone number
     @Column(name = "username", nullable = false, unique = true)
     private String username;
-
-    @Column(name = "phone", nullable = false, unique = true)
-    private String phoneNumber;
 
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "name")
+    private String name;
+
     @Column(name = "bonuses")
     private Integer bonuses;
 
-    @OneToMany(mappedBy = "user")
-    private Map<String, PaymentInfo> paymentInfos = new HashMap<>();
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    @NonNull
+    private List<Role> roles = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return roles;
     }
 
     @Override

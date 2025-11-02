@@ -1,11 +1,10 @@
 package com.pidel.security.dto;
 
-
 import lombok.*;
 
 @Data
 @Builder
-public class AuthResponseDto {
+public class AuthUserDto {
     private String username;
-    private String token;
+    private String password;
 }
