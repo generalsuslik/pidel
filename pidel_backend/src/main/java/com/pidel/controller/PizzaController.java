@@ -5,8 +5,10 @@ import com.pidel.entity.Pizza;
 import com.pidel.service.PizzaService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -32,19 +34,22 @@ public class PizzaController {
         return pizzaService.findById(pizzaId);
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
             summary = "Creates pizza"
     )
-    public Pizza createPizza(@RequestBody PizzaDto request) {
+    public Pizza createPizza(@ModelAttribute PizzaDto request) throws IOException {
         return pizzaService.createPizza(request);
     }
 
-    @PostMapping("/update/{pizzaId}")
+    @PostMapping(
+            value = "/update/{pizzaId}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
     @Operation(
             summary = "Updates pizza"
     )
-    public Pizza updatePizza(@PathVariable("pizzaId") Long pizzaId, @RequestBody PizzaDto request) {
+    public Pizza updatePizza(@PathVariable("pizzaId") Long pizzaId, @ModelAttribute PizzaDto request) {
         return pizzaService.updatePizza(pizzaId, request);
     }
 

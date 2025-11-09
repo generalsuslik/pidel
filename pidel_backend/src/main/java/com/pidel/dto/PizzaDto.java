@@ -2,6 +2,7 @@ package com.pidel.dto;
 
 import com.pidel.entity.Ingredient;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,4 +17,5 @@ public class PizzaDto {
     private Double kcal;
     private Double protein;
     private Double fat;
+    private MultipartFile imageFile;
 }
