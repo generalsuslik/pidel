@@ -42,4 +42,8 @@ public class Pizza {
 
     @Column(name = "fat", nullable = false)
     private Double fat;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "pizza_image_id", referencedColumnName = "id")
+    private Image image;
 }
