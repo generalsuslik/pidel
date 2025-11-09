@@ -1,12 +1,13 @@
 package com.pidel.service.impl;
 
+import com.pidel.dto.PizzaDto;
 import com.pidel.entity.Pizza;
-import com.pidel.entity.PizzaSize;
 import com.pidel.repository.PizzaRepository;
-import com.pidel.repository.PizzaSizeRepository;
 import com.pidel.service.PizzaService;
+import com.pidel.service.PizzaSizeService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 public class PizzaServiceImpl implements PizzaService {
 
     PizzaRepository pizzaRepository;
-    PizzaSizeRepository pizzaSizeRepository;
+    PizzaSizeService pizzaSizeService;
 
     @Override
     public List<Pizza> findAll() {
@@ -31,37 +32,41 @@ public class PizzaServiceImpl implements PizzaService {
     }
 
     @Override
-    public Pizza createPizza(Pizza pizza) {
-        if (pizza.getPizzaSize() == null || pizza.getPizzaSize().getId() == null) {
+    public Pizza createPizza(@NonNull PizzaDto request) {
+        if (request.getPizzaSizeId() == null || !pizzaSizeService.exists(request.getPizzaSizeId())) {
             throw new RuntimeException("PizzaSize is required");
         }
 
-        PizzaSize pizzaSize = pizzaSizeRepository.findById(pizza.getPizzaSize().getId())
-                .orElseThrow();
-
-        pizza.setPizzaSize(null);
-        pizza.setPizzaSize(pizzaSize);
+        var pizza = Pizza.builder()
+                        .name(request.getName())
+                        .description(request.getDescription())
+                        .price(request.getPrice())
+                        .kcal(request.getKcal())
+                        .protein(request.getProtein())
+                        .fat(request.getFat())
+                        .pizzaSize(pizzaSizeService.findById(request.getPizzaSizeId()))
+                        .build();
         return pizzaRepository.save(pizza);
     }
 
     @Override
     @Transactional
-    public Pizza updatePizza(Long id, Pizza pizza) {
+    public Pizza updatePizza(Long id, @NonNull PizzaDto request) {
         return pizzaRepository.findById(id)
                 .map(pizzaToUpdate -> {
-                    pizzaToUpdate.setName(pizza.getName());
-                    pizzaToUpdate.setDescription(pizza.getDescription());
-                    pizzaToUpdate.setPrice(pizza.getPrice());
-                    pizzaToUpdate.setPizzaSize(pizza.getPizzaSize());
-                    pizzaToUpdate.setIngredients(pizza.getIngredients());
-                    pizzaToUpdate.setFat(pizza.getFat());
-                    pizzaToUpdate.setKcal(pizza.getKcal());
-                    pizzaToUpdate.setProtein(pizza.getProtein());
+                    pizzaToUpdate.setName(request.getName().isEmpty() ? pizzaToUpdate.getName() : request.getName());
+                    pizzaToUpdate.setDescription(request.getDescription().isEmpty() ? pizzaToUpdate.getDescription() : request.getDescription());
+                    pizzaToUpdate.setPrice(request.getPrice().isNaN() ? pizzaToUpdate.getPrice() : request.getPrice());
+                    pizzaToUpdate.setPizzaSize(pizzaSizeService.findById(request.getPizzaSizeId()));
+                    pizzaToUpdate.setIngredients(request.getIngredients().isEmpty() ? pizzaToUpdate.getIngredients() : request.getIngredients());
+                    pizzaToUpdate.setFat(request.getFat().isNaN() ? pizzaToUpdate.getFat() : request.getFat());
+                    pizzaToUpdate.setKcal(request.getKcal().isNaN() ? pizzaToUpdate.getKcal() : request.getKcal());
+                    pizzaToUpdate.setProtein(request.getProtein().isNaN() ? pizzaToUpdate.getProtein() : request.getProtein());
                     return pizzaRepository.save(pizzaToUpdate);
                 })
                 .orElseGet(() -> {
-                    pizza.setId(id);
-                    return createPizza(pizza);
+                    request.setId(id);
+                    return createPizza(request);
                 });
     }
 

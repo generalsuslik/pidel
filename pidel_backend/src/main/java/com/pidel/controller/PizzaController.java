@@ -1,5 +1,6 @@
 package com.pidel.controller;
 
+import com.pidel.dto.PizzaDto;
 import com.pidel.entity.Pizza;
 import com.pidel.service.PizzaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +18,7 @@ public class PizzaController {
 
     @GetMapping
     @Operation(
-            summary = "Get list of all pizzas"
+            summary = "Returns list of all pizzas"
     )
     public List<Pizza> getAllPizzas() {
         return pizzaService.findAll();
@@ -25,7 +26,7 @@ public class PizzaController {
 
     @GetMapping("/{pizzaId}")
     @Operation(
-            summary = "Get pizza with id = pizzaId"
+            summary = "Returns pizza with id = pizzaId"
     )
     public Pizza getPizza(@PathVariable("pizzaId") Long pizzaId) {
         return pizzaService.findById(pizzaId);
@@ -35,16 +36,16 @@ public class PizzaController {
     @Operation(
             summary = "Creates pizza"
     )
-    public Pizza createPizza(@RequestBody Pizza pizza) {
-        return pizzaService.createPizza(pizza);
+    public Pizza createPizza(@RequestBody PizzaDto request) {
+        return pizzaService.createPizza(request);
     }
 
     @PostMapping("/update/{pizzaId}")
     @Operation(
             summary = "Updates pizza"
     )
-    public Pizza updatePizza(@PathVariable("pizzaId") Long pizzaId, @RequestBody Pizza pizza) {
-        return pizzaService.updatePizza(pizzaId, pizza);
+    public Pizza updatePizza(@PathVariable("pizzaId") Long pizzaId, @RequestBody PizzaDto request) {
+        return pizzaService.updatePizza(pizzaId, request);
     }
 
     @PostMapping("/delete/{pizzaId}")
