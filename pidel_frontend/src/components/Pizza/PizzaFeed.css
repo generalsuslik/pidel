@@ -1,0 +1,18 @@
+.pizza-feed-internal {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns */
+    gap: 20px; /* spacing between items */
+}
+
+/* Responsive: adjust columns based on screen size */
+@media (max-width: 1024px) {
+    .pizza-feed-internal {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on tablets */
+    }
+}
+
+@media (max-width: 640px) {
+    .pizza-feed-internal {
+        grid-template-columns: 1fr; /* 1 column on mobile */
+    }
+}
