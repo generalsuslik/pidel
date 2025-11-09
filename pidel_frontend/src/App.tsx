@@ -1,9 +1,11 @@
 import './App.css'
-import {PizzaFeed} from "./components/Pizza/PizzaFeed.tsx";
+import {PizzaFeed} from "./components/pizza/PizzaFeed.tsx";
+import {Navbar} from "./components/common/navbar/Navbar.tsx";
 
 function App() {
   return (
     <>
+        <Navbar />
         <PizzaFeed/>
     </>
   )
