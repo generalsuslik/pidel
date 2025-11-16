@@ -19,7 +19,9 @@ export const Navbar = () => {
                         <span className='cart-icon'>🛒</span>
                         <span className='cart-count'>0</span>
                     </button>
-                    <button className='login-btn'>Login</button>
+                    <Link to='/sign-in'>
+                        <button className='login-btn'>Login</button>
+                    </Link>
                 </div>
             </div>
         </nav>
