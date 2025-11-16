@@ -12,7 +12,7 @@ public class PizzaDto {
     private String description;
     private Long pizzaSizeId;
     private Double price;
-    List<Ingredient> ingredients;
+    private List<Ingredient> ingredients;
     private Double kcal;
     private Double protein;
     private Double fat;
