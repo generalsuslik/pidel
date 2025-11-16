@@ -1,16 +1,14 @@
 package com.pidel.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
+@Getter
+@Setter
 @Table(name = "ingredient")
 public class Ingredient {
     @Id
@@ -19,4 +17,7 @@ public class Ingredient {
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
+
+    @Column(name = "weight", nullable = false)
+    private Double weight;
 }

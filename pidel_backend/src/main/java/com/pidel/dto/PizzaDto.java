@@ -8,7 +8,6 @@ import java.util.List;
 
 @Data
 public class PizzaDto {
-    Long id; // Used only in update when updatable pizza not found
     private String name;
     private String description;
     private Long pizzaSizeId;

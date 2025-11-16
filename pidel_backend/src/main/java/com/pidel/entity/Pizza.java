@@ -5,13 +5,12 @@ import lombok.*;
 
 import java.util.List;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
 @Getter
 @Setter
-@Entity
 @Table(name = "pizzas")
 public class Pizza {
     @Id

@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

@@ -1,7 +1,7 @@
 package com.pidel.controller;
 
 
-import com.pidel.entity.User;
+import com.pidel.dto.UserDto;
 import com.pidel.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -18,31 +18,31 @@ public class UserController {
 
     @GetMapping
     @Operation(
-            summary = "Return list of all registered users"
+            summary = "Returns list of all registered users"
     )
-    public List<User> findAll() {
+    public List<UserDto> findAll() {
         return userService.findAll();
     }
 
     @GetMapping("/{userId}")
     @Operation(
-            summary = "Return user with id = userId"
+            summary = "Returns user with id = userId"
     )
-    public User getUser(@PathVariable("userId") Long userId) {
+    public UserDto getUser(@PathVariable("userId") Long userId) {
         return userService.findById(userId);
     }
 
     @GetMapping("/{phoneNumber}")
     @Operation(
-            summary = "Return user with phone number = phoneNumber"
+            summary = "Returns user with phone number = phoneNumber"
     )
-    public User getUserByPhone(@PathVariable("phoneNumber") String phoneNumber) {
+    public UserDto getUserByPhone(@PathVariable("phoneNumber") String phoneNumber) {
         return userService.findByUsername(phoneNumber);
     }
 
     @PostMapping("/delete/{userId}")
     @Operation(
-            summary = "Deleted user with id = userId"
+            summary = "Deletes user with id = userId"
     )
     public void deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);

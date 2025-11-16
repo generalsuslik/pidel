@@ -23,12 +23,14 @@ public class AuthService {
     private final UserService userService;
 
     public AuthResponseDto register(RegistrationUserDto request) {
-        var user = userService.createUser(request);
+        User user = userService.createUser(request);
+        log.info("User registered successfully: {}", request);
         return generateResponse(user);
     }
 
     public AuthResponseDto registerAdmin(RegistrationUserDto request) {
-        var user = userService.createAdmin(request);
+        User user = userService.createAdmin(request);
+        log.info("Admin registered successfully: {}", request);
         return generateResponse(user);
     }
 

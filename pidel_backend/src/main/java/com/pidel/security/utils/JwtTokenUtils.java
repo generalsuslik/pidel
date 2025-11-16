@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ public class JwtTokenUtils {
     @Value("${jwt.lifetime}")
     private Duration jwtLifetime;
 
-    public String generateToken(UserDetails user) {
+    public String generateToken(@NonNull UserDetails user) {
         Date issuedDate = new Date();
         Date expirationDate = new Date(issuedDate.getTime() + jwtLifetime.toMillis());
 
@@ -45,7 +46,7 @@ public class JwtTokenUtils {
         return getAllClaimsFromToken(token).getSubject();
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails) {
+    public boolean isTokenValid(String token, @NonNull UserDetails userDetails) {
         final String tokenUsername = getUsername(token);
         return tokenUsername.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
@@ -58,7 +59,7 @@ public class JwtTokenUtils {
         return getClaim(token, Claims::getExpiration);
     }
 
-    private <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
+    private <T> T getClaim(String token, @NonNull Function<Claims, T> claimsResolver) {
         final Claims claims = getAllClaimsFromToken(token);
         return claimsResolver.apply(claims);
     }
@@ -71,7 +72,7 @@ public class JwtTokenUtils {
                 .getPayload();
     }
 
-    private SecretKey generateSecretKey() {
+    private @NonNull SecretKey generateSecretKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
         return Keys.hmacShaKeyFor(keyBytes);
     }

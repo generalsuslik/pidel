@@ -36,7 +36,7 @@ public class PizzaController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
-            summary = "Creates pizza"
+            summary = "Creates pizza. Returns created pizza"
     )
     public Pizza createPizza(@ModelAttribute PizzaDto request) throws IOException {
         return pizzaService.createPizza(request);
@@ -47,7 +47,7 @@ public class PizzaController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
     )
     @Operation(
-            summary = "Updates pizza"
+            summary = "Updates pizza. Returns updated pizza"
     )
     public Pizza updatePizza(@PathVariable("pizzaId") Long pizzaId, @ModelAttribute PizzaDto request) {
         return pizzaService.updatePizza(pizzaId, request);

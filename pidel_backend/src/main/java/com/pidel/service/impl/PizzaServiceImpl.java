@@ -80,7 +80,6 @@ public class PizzaServiceImpl implements PizzaService {
                     return pizzaRepository.save(pizzaToUpdate);
                 })
                 .orElseGet(() -> {
-                    request.setId(id);
                     try {
                         return createPizza(request);
                     } catch (IOException e) {
