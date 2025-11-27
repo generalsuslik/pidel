@@ -23,6 +23,9 @@ public class PizzaSize {
     @Column(name = "size", nullable = false, unique = true)
     private Integer size;
 
+    @Column(name = "coefficient", nullable = false)
+    private Double coefficient;
+
     @OneToMany(mappedBy = "pizzaSize", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Pizza> pizzas = new ArrayList<>();

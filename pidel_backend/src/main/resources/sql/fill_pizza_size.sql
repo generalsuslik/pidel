@@ -1,19 +1,19 @@
 INSERT INTO pizza_size
-(size)
+(size, coefficient)
 VALUES
-    (20);
+    (20, 0.5);
 
 INSERT INTO pizza_size
-(size)
+(size, coefficient)
 VALUES
-    (25);
+    (25, 0.7);
 
 INSERT INTO pizza_size
-(size)
+(size, coefficient)
 VALUES
-    (30);
+    (30, 1);
 
 INSERT INTO pizza_size
-(size)
+(size, coefficient)
 VALUES
-    (35);
+    (35, 1.25);

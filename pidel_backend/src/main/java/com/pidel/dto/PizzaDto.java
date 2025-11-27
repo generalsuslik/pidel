@@ -1,6 +1,6 @@
 package com.pidel.dto;
 
-import com.pidel.entity.Ingredient;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -12,9 +12,11 @@ public class PizzaDto {
     private String description;
     private Long pizzaSizeId;
     private Double price;
-    private List<Ingredient> ingredients;
+    private List<IngredientDto> ingredients;
     private Double kcal;
     private Double protein;
     private Double fat;
+
+    @JsonIgnore
     private MultipartFile imageFile;
 }

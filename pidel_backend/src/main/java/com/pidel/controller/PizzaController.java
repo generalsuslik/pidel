@@ -53,6 +53,17 @@ public class PizzaController {
         return pizzaService.updatePizza(pizzaId, request);
     }
 
+    @PostMapping(
+            value = "/update/{pizzaId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(
+            summary = "Updates pizza details (JSON). Returns updated pizza"
+    )
+    public Pizza updatePizzaJson(@PathVariable("pizzaId") Long pizzaId, @RequestBody PizzaDto request) {
+        return pizzaService.updatePizza(pizzaId, request);
+    }
+
     @PostMapping("/delete/{pizzaId}")
     @Operation(
             summary = "Deletes pizza with id = {pizzaId}"
