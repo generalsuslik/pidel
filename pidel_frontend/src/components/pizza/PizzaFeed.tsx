@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import {PizzaFeedComponent} from "./PizzaFeedComponent.tsx";
 
 import './PizzaFeed.css';
@@ -29,9 +30,9 @@ export const PizzaFeed = () => {
         <div className='pizza-feed'>
             <div className='pizza-feed-internal'>
                 {pizzas.map((pizza) => (
-                    <a>
+                    <Link to={`/pizza/${pizza.id}`} style={{ textDecoration: 'none' }}>
                         <PizzaFeedComponent pizza={pizza}/>
-                    </a>
+                    </Link>
                 ))}
             </div>
         </div>

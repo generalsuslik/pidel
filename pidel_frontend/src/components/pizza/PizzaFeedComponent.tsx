@@ -13,7 +13,7 @@ export const PizzaFeedComponent = ({pizza}) => {
                      {pizza.description}
                  </p>
                  <button className='buy-pizza-btn'>
-                     + {pizza.price} р
+                     from {pizza.price} р
                  </button>
              </div>
         </div>

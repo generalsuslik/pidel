@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import {PizzaFeed} from "./components/pizza/PizzaFeed.tsx";
 import {Navbar} from "./components/common/navbar/Navbar.tsx";
 import {AuthLayout} from "./components/auth/AuthLayout.tsx";
+import {Pizza} from "./components/pizza/Pizza.tsx";
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
         <Navbar />
         <Routes>
             <Route path='/' element={<PizzaFeed />} />
-
+            <Route path="/pizza/:id" element={<Pizza />} />
             <Route
                 path="/sign-in"
                 element={
