@@ -8,13 +8,16 @@ export const Pizza = () => {
     const baseUrl = "http://localhost:8080/api/v1"
     const [pizza, setPizza] = useState<any>(null)
     const [loading, setLoading] = useState(true)
-    const [selectedSize, setSelectedSize] = useState('M')
+    const [selectedSize, setSelectedSize] = useState('30')
+    const [price, setPrice] = useState(0)
 
     useEffect(() => {
         (async () => {
             try {
                 const response = await axios.get(`${baseUrl}/pizza/${id}`)
                 setPizza(response.data)
+                setSelectedSize(response.data.pizzaSizes[0].size)
+                setPrice(response.data.price * response.data.pizzaSizes[0].coefficient)
                 setLoading(false)
             } catch (_) {
                 setLoading(false)
@@ -31,8 +34,7 @@ export const Pizza = () => {
     }
 
     const ingredients = pizza.ingredients;
-    console.log(pizza)
-    const sizes = ["S", "M", "L"];
+    const sizes = pizza.pizzaSizes;
 
     return (
         <div className='pizza-page-container'>
@@ -67,18 +69,21 @@ export const Pizza = () => {
                         <div className="size-selector">
                             {sizes.map((size) => (
                                 <div
-                                    key={size}
-                                    className={`size-option ${selectedSize === size ? 'active' : ''}`}
-                                    onClick={() => setSelectedSize(size)}
+                                    key={size.size}
+                                    className={`size-option ${selectedSize === size.size ? 'active' : ''}`}
+                                    onClick={() => {
+                                        setSelectedSize(size.size)
+                                        setPrice(pizza.price * size.coefficient)
+                                    }}
                                 >
-                                    {size}
+                                    {size.size}
                                 </div>
                             ))}
                         </div>
                     </div>
 
                     <div className='pizza-page-actions'>
-                        <div className="price-tag">{pizza.price} р</div>
+                        <div className="price-tag">{Math.floor(price)} р</div>
                         <button className='add-to-cart-large-btn'>
                             Add to Cart
                         </button>
