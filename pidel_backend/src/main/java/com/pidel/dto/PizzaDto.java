@@ -10,7 +10,7 @@ import java.util.List;
 public class PizzaDto {
     private String name;
     private String description;
-    private Long pizzaSizeId;
+    private List<Integer> pizzaSizes;
     private Double price;
     private List<IngredientDto> ingredients;
     private Double kcal;

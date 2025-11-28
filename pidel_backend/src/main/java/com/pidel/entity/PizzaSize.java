@@ -1,11 +1,7 @@
 package com.pidel.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,8 +21,4 @@ public class PizzaSize {
 
     @Column(name = "coefficient", nullable = false)
     private Double coefficient;
-
-    @OneToMany(mappedBy = "pizzaSize", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Pizza> pizzas = new ArrayList<>();
 }

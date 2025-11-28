@@ -41,7 +41,10 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Override
     public Pizza createPizza(@NonNull PizzaDto request) throws IOException {
-        if (request.getPizzaSizeId() == null || !pizzaSizeService.exists(request.getPizzaSizeId())) {
+        log.info("Creating pizza with dto: {}", request);
+
+        List<Integer> pizzaSizes = request.getPizzaSizes();
+        if (pizzaSizes == null || pizzaSizes.isEmpty()) {
             throw new RuntimeException("PizzaSize is required");
         }
 
@@ -52,7 +55,7 @@ public class PizzaServiceImpl implements PizzaService {
                 .kcal(request.getKcal())
                 .protein(request.getProtein())
                 .fat(request.getFat())
-                .pizzaSize(pizzaSizeService.findById(request.getPizzaSizeId()));
+                .pizzaSizes(pizzaSizeService.findBySizes(pizzaSizes));
 
         if (request.getImageFile() == null) {
             pizzaBuilder.image(imageService.getDefaultImageData());
@@ -68,12 +71,13 @@ public class PizzaServiceImpl implements PizzaService {
     @Transactional
     public Pizza updatePizza(Long id, @NonNull PizzaDto request) {
         log.info("Updating pizza with id: {}, dto: {}", id, request);
+
         return pizzaRepository.findById(id)
                 .map(pizzaToUpdate -> {
                     pizzaToUpdate.setName(request.getName() == null ? pizzaToUpdate.getName() : request.getName());
                     pizzaToUpdate.setDescription(request.getDescription() == null ? pizzaToUpdate.getDescription() : request.getDescription());
                     pizzaToUpdate.setPrice(request.getPrice() == null ? pizzaToUpdate.getPrice() : request.getPrice());
-                    pizzaToUpdate.setPizzaSize(request.getPizzaSizeId() == null ? pizzaToUpdate.getPizzaSize() : pizzaSizeService.findById(request.getPizzaSizeId()));
+                    pizzaToUpdate.setPizzaSizes(request.getPizzaSizes() == null ? pizzaToUpdate.getPizzaSizes() : pizzaSizeService.findBySizes(request.getPizzaSizes()));
                     try {
                         pizzaToUpdate.setImage(request.getImageFile() == null ? pizzaToUpdate.getImage() : imageService.saveImageToStorage(request.getImageFile(), "/pizza"));
                     } catch (IOException e) {
@@ -83,6 +87,7 @@ public class PizzaServiceImpl implements PizzaService {
                     pizzaToUpdate.setFat(request.getFat() == null ? pizzaToUpdate.getFat() : request.getFat());
                     pizzaToUpdate.setKcal(request.getKcal() == null ? pizzaToUpdate.getKcal() : request.getKcal());
                     pizzaToUpdate.setProtein(request.getProtein() == null ? pizzaToUpdate.getProtein() : request.getProtein());
+                    log.info("Updated pizza: {}", pizzaToUpdate);
                     return pizzaRepository.save(pizzaToUpdate);
                 })
                 .orElseGet(() -> {
@@ -96,6 +101,7 @@ public class PizzaServiceImpl implements PizzaService {
 
     @Override
     public void deletePizza(Long id) {
+        log.info("Deleting pizza with id: {}", id);
         pizzaRepository.deleteById(id);
     }
 }

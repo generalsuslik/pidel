@@ -3,6 +3,7 @@ package com.pidel.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -20,9 +21,13 @@ public class Pizza {
     @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pizza_size_id", referencedColumnName = "id")
-    private PizzaSize pizzaSize;
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinTable(
+            name = "pizza_pizza_size",
+            joinColumns = @JoinColumn(name = "pizza_id"),
+            inverseJoinColumns = @JoinColumn(name = "pizza_size_id")
+    )
+    private List<PizzaSize> pizzaSizes = new ArrayList<>();
 
     @Column(name = "price", nullable = false)
     private Double price;
