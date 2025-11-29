@@ -1,22 +1,48 @@
 import { useState } from 'react'
 import type { AuthMode } from './AuthLayout'
-import { Link } from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
+import axios from "axios";
 
 interface AuthFormProps {
     mode: AuthMode
+    setLoggedIn: (isLoggedIn: boolean) => void
 }
 
-export const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
-    const [phoneNumber, setPhoneNumber] = useState('')
+export const AuthForm: React.FC<AuthFormProps> = ({ mode, setLoggedIn }) => {
+    const [username, setPhoneNumber] = useState('')
     const [password, setPassword] = useState('')
     const [name, setName] = useState('')
+    const navigate = useNavigate()
 
+    const baseUrl =  "http://127.0.0.1:8080/api/v1/auth/"
     const isSignIn = mode === 'sign-in'
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        // Replace with real auth logic / API call
-        console.log('Auth submit:', { mode, phoneNumber, password, name })
+
+        const url = `${baseUrl}${isSignIn ? 'sign-in' : 'sign-up'}`
+        const payload = isSignIn
+            ? { username, password }
+            : { username, password, name }
+
+        try {
+            console.log(payload)
+            const { data } = await axios.post(url, payload)
+
+            if (data.token) {
+                document.cookie = `token=${data.token}; path=/; max-age=86400; SameSite=Lax`
+                setLoggedIn(true)
+                navigate("/")
+            }
+        } catch (err) {
+            if (err.response) {
+                // server responded with status != 2xx
+                console.error('API Error:', err.response.data)
+            } else {
+                // network error or no response
+                console.error('Network Error:', err.message)
+            }
+        }
     }
 
     return (
@@ -30,7 +56,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
                         id="name"
                         className="auth-input"
                         type="text"
-                        placeholder="Jane Pizza Lover"
+                        placeholder="Arik Pizza Lover"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
@@ -46,7 +72,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
                     className="auth-input"
                     type="phone-number"
                     placeholder="+1 (123) 456-7890"
-                    value={phoneNumber}
+                    value={username}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                 />
             </div>

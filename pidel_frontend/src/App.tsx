@@ -4,11 +4,13 @@ import {PizzaFeed} from "./components/pizza/PizzaFeed.tsx";
 import {Navbar} from "./components/common/navbar/Navbar.tsx";
 import {AuthLayout} from "./components/auth/AuthLayout.tsx";
 import {Pizza} from "./components/pizza/Pizza.tsx";
+import {useState} from "react";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   return (
     <>
-        <Navbar />
+        <Navbar isLoggedIn={isLoggedIn} />
         <Routes>
             <Route path='/' element={<PizzaFeed />} />
             <Route path="/pizza/:id" element={<Pizza />} />
@@ -19,6 +21,7 @@ function App() {
                         title="Welcome back"
                         subtitle="Sign in to continue exploring delicious pizzas."
                         mode="sign-in"
+                        setLoggedIn={setIsLoggedIn}
                     />
                 }
             />
@@ -29,6 +32,7 @@ function App() {
                         title="Create your account"
                         subtitle="Join us and never miss a slice."
                         mode="sign-up"
+                        setLoggedIn={setIsLoggedIn}
                     />
                 }
             />

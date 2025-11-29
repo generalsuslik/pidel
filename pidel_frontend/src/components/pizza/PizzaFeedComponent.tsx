@@ -13,7 +13,7 @@ export const PizzaFeedComponent = ({pizza}) => {
                      {pizza.description}
                  </p>
                  <button className='buy-pizza-btn'>
-                     from {pizza.price} р
+                     From {Math.floor(pizza.price * pizza.pizzaSizes[0].coefficient)} rub
                  </button>
              </div>
         </div>

@@ -1,11 +1,10 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import axios from "axios";
 import './Pizza.css'
+import {apiClient} from "../../api/client.ts";
 
 export const Pizza = () => {
     const { id } = useParams();
-    const baseUrl = "http://localhost:8080/api/v1"
     const [pizza, setPizza] = useState<any>(null)
     const [loading, setLoading] = useState(true)
     const [selectedSize, setSelectedSize] = useState('30')
@@ -14,10 +13,10 @@ export const Pizza = () => {
     useEffect(() => {
         (async () => {
             try {
-                const response = await axios.get(`${baseUrl}/pizza/${id}`)
-                setPizza(response.data)
-                setSelectedSize(response.data.pizzaSizes[0].size)
-                setPrice(response.data.price * response.data.pizzaSizes[0].coefficient)
+                const { data } = await apiClient.get(`/pizza/${id}`);
+                setPizza(data)
+                setSelectedSize(data.pizzaSizes[0].size)
+                setPrice(data.price * data.pizzaSizes[0].coefficient)
                 setLoading(false)
             } catch (_) {
                 setLoading(false)

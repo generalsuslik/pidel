@@ -8,9 +8,10 @@ interface AuthLayoutProps {
     title: string
     subtitle?: string
     mode: AuthMode
+    setLoggedIn: (isLoggedIn: boolean) => void
 }
 
-export const AuthLayout: React.FC<AuthLayoutProps> = ({ title, subtitle, mode }) => {
+export const AuthLayout: React.FC<AuthLayoutProps> = ({ title, subtitle, mode, setLoggedIn }) => {
     return (
         <div className="auth-page">
             <div className="auth-background-gradient" />
@@ -26,7 +27,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({ title, subtitle, mode })
                     {subtitle && <p className="auth-subtitle">{subtitle}</p>}
                 </div>
 
-                <AuthForm mode={mode} />
+                <AuthForm mode={mode} setLoggedIn={setLoggedIn} />
             </div>
         </div>
     )
