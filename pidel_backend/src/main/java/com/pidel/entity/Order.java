@@ -4,6 +4,7 @@ import com.pidel.entity.common.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -24,7 +25,14 @@ public class Order {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
+    @Column(name = "total", nullable = false)
     private Double total;
 
-    private List<Pizza> pizzas;
+    @ManyToMany
+    @JoinTable(
+            name = "order_pizza",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "pizza_id")
+    )
+    private List<Pizza> pizzas = new ArrayList<>();
 }

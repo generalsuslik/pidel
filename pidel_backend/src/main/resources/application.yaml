@@ -10,6 +10,15 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  kafka:
+    bootstrap-servers: app:9092
+    consumer:
+      auto-offset-reset: earliest
+    producer:
+      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    listener:
+      missing-topics-fatal: false
 
 server:
   servlet:
