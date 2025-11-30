@@ -1,4 +1,6 @@
 import json
+import os
+
 from aiokafka import AIOKafkaProducer, AIOKafkaConsumer
 
 
@@ -29,4 +31,4 @@ class KafkaClient:
         return consumer
 
 
-kafka_client = KafkaClient("kafka:9092")
+kafka_client = KafkaClient(os.getenv("KAFKA_BROKERS", "kafka:9092"))
