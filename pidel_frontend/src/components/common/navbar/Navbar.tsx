@@ -2,8 +2,15 @@ import { Link } from 'react-router-dom';
 import './Navbar.css';
 import {useEffect, useState} from "react";
 import {getCookie} from "../../../api/client.ts";
+import * as React from "react";
 
-export const Navbar = ({ isLoggedIn }) => {
+interface NavbarProps {
+    isLoggedIn: boolean;
+    totalPrice: number;
+    onCartClick: () => void;
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ isLoggedIn, totalPrice, onCartClick }) => {
     const [user, setUser] = useState<{ name?: string; sub?: string } | null>(null);
 
     useEffect(() => {
@@ -25,7 +32,7 @@ export const Navbar = ({ isLoggedIn }) => {
                 console.error("Failed to decode token", e);
             }
         }
-    }, [isLoggedIn]);
+    }, [isLoggedIn, totalPrice]);
 
     const handleLogout = () => {
         // Clear token cookie
@@ -47,9 +54,9 @@ export const Navbar = ({ isLoggedIn }) => {
                 </ul>
 
                 <div className='navbar-actions'>
-                    <button className='cart-btn'>
+                    <button className='cart-btn' onClick={onCartClick}>
                         <span className='cart-icon'>🛒</span>
-                        <span className='cart-count'>0</span>
+                        <span className='cart-count'>{totalPrice}</span>
                     </button>
 
                     {user ? (

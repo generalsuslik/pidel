@@ -1,7 +1,8 @@
 import './PizzaFeedComponent.css'
+import * as React from "react";
+import type {PizzaProp} from "./PizzaFeed.tsx";
 
-// @ts-ignore
-export const PizzaFeedComponent = ({pizza}) => {
+export const PizzaFeedComponent: React.FC<PizzaProp> = ({pizza}) => {
     return (
         <div key={pizza.id} className='pizza-component'>
              <div className='pizza-internal'>

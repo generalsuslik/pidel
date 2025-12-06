@@ -5,6 +5,22 @@ import {PizzaFeedComponent} from "./PizzaFeedComponent.tsx";
 
 import './PizzaFeed.css';
 
+export interface PizzaProp {
+    pizza: {
+        id: number,
+        name: string,
+        description: string,
+        price: number,
+        image: {
+            imageUrl: string
+        },
+        pizzaSizes: [{
+            size: string,
+            coefficient: number
+        }]
+    }
+}
+
 export const PizzaFeed = () => {
     const baseUrl = "http://localhost:8080/api/v1"
 
