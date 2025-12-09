@@ -17,4 +17,5 @@ public interface UserService {
     UserDto addRole(Long userId, Long roleId);
     void deleteUser(Long id);
     UserDetails loadUserByUsername(String username);
+    String getAddress(String username);
 }

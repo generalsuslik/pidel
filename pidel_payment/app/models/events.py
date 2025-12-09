@@ -3,14 +3,16 @@ from typing import List
 
 class OrderItem(BaseModel):
     pizzaId: int
-    qty: int
+    quantity: int
+    price: float
+    pizzaSize: int
 
 class OrderCreated(BaseModel):
     orderId: int
-    userId: int
-    amount: float
-    items: List[OrderItem]
+    username: int
+    totalPrice: float
     address: str
+    items: List[OrderItem]
 
 class PaymentProcessed(BaseModel):
     orderId: int

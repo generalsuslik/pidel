@@ -1,7 +1,6 @@
 package com.pidel.kafka;
 
 import com.pidel.dto.OrderCreatedEvent;
-import com.pidel.entity.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -12,12 +11,7 @@ public class OrderEventProducer {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void sendOrderCreatedEvent(Order order) {
-        OrderCreatedEvent event = new OrderCreatedEvent(
-                order.getId(),
-                order.getUserId(),
-                order.getTotal()
-        );
+    public void sendOrderCreatedEvent(OrderCreatedEvent event) {
         kafkaTemplate.send("orders", event);
     }
 }

@@ -28,7 +28,7 @@ public class UserController {
     @Operation(
             summary = "Returns user with id = userId"
     )
-    public UserDto getUser(@PathVariable("userId") Long userId) {
+    public UserDto getUser(@PathVariable Long userId) {
         return userService.findById(userId);
     }
 
@@ -36,7 +36,7 @@ public class UserController {
     @Operation(
             summary = "Returns user with phone number = phoneNumber"
     )
-    public UserDto getUserByPhone(@PathVariable("phoneNumber") String phoneNumber) {
+    public UserDto getUserByPhone(@PathVariable String phoneNumber) {
         return userService.findByUsername(phoneNumber);
     }
 
@@ -44,7 +44,7 @@ public class UserController {
     @Operation(
             summary = "Deletes user with id = userId"
     )
-    public void deleteUser(@PathVariable("userId") Long userId) {
+    public void deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
     }
 }

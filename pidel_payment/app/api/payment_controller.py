@@ -7,4 +7,5 @@ service = PaymentService()
 
 @router.post("/pay")
 async def pay(order: OrderCreated):
+    print(f"Received order for payment: {order}")
     return await service.process_payment(order)

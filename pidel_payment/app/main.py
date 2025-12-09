@@ -23,6 +23,7 @@ async def order_consumer_loop():
     consumer = await kafka_client.consume_orders("orders")
 
     async for msg in consumer:
+        print(f"Received order message: {msg.value}")
         order = OrderCreated(**msg.value)
         payment = await service.process_payment(order)
 

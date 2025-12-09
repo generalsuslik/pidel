@@ -22,17 +22,15 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @Column(name = "username", nullable = false)
+    private String username;
 
-    @Column(name = "total", nullable = false)
-    private Double total;
+    @Column(name = "address", nullable = false)
+    private String address;
 
-    @ManyToMany
-    @JoinTable(
-            name = "order_pizza",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "pizza_id")
-    )
-    private List<Pizza> pizzas = new ArrayList<>();
+    @Column(name = "total_price", nullable = false)
+    private Double totalPrice;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> items = new ArrayList<>();
 }
