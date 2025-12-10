@@ -4,6 +4,7 @@ import com.pidel.entity.Image;
 import com.pidel.repository.ImageRepository;
 import com.pidel.service.ImageService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,8 +13,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
@@ -27,46 +30,31 @@ public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
 
     @Override
-    public Image saveImageToStorage(MultipartFile imageFile, String service) throws IOException {
-        Path dir = Path.of(IMAGE_FILE_PATH + service + "/");
-        if (Files.notExists(dir)) {
-            Files.createDirectories(dir);
-        }
+    public Image saveImageToStorage(String pizzaTitle, MultipartFile imageFile, String service) throws IOException {
+        boolean isDefault = Objects.equals(pizzaTitle, "default");
 
         UUID uuidPart = UUID.randomUUID();
         String imageTitle = uuidPart + "_" + imageFile.getOriginalFilename();
-        String imagePath = IMAGE_FILE_PATH + service + "/" + imageTitle;
-        String imageUrl = BASE_URL + "/images/" + imageTitle;
+        String imageDirectory = IMAGE_FILE_PATH + (isDefault ? "/default/" : "/") + service;
+        String imagePath =  imageDirectory + "/ " + imageTitle;
+        String imageUrl = BASE_URL + "/images" + (isDefault ? "/default/" : "/") + imageTitle;
 
         var image = Image.builder()
                 .title(imageTitle)
-                .type(imageFile.getContentType())
-                .imagePath(imagePath)
-                .imageUrl(imageUrl)
-                .createdAt(new Date())
-                .build();
-        imageRepository.save(image);
-        imageFile.transferTo(Path.of(imagePath));
-
-        return image;
-    }
-
-    @Override
-    public Image saveImageToStorage(MultipartFile imageFile, String service, boolean isDefault) throws IOException {
-        String imageTitle = imageFile.getOriginalFilename();
-        String imagePath = IMAGE_FILE_PATH + "default/" + service + "/" + imageTitle;
-        String imageUrl = BASE_URL + "/images/default/" + imageTitle;
-
-        var image = Image.builder()
-                .title(imageTitle)
+                .pizzaName(pizzaTitle)
                 .type(imageFile.getContentType())
                 .imagePath(imagePath)
                 .imageUrl(imageUrl)
                 .createdAt(new Date())
                 .isDefault(isDefault)
                 .build();
-        imageRepository.save(image);
+
+        Path imageDir = Path.of(imageDirectory);
+        if (Files.notExists(imageDir)) {
+            Files.createDirectories(imageDir);
+        }
         imageFile.transferTo(Path.of(imagePath));
+        imageRepository.save(image);
 
         return image;
     }
@@ -90,6 +78,7 @@ public class ImageServiceImpl implements ImageService {
     public byte[] getImage(String imageName) throws IOException {
         Image image = getImageData(imageName);
         String imagePath = image.getImagePath();
+        log.info("Requested image path: {}", imagePath);
         return Files.readAllBytes(Path.of(imagePath));
     }
 

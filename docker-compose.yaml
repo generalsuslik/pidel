@@ -1,6 +1,6 @@
 services:
   app:
-    build: .
+    build: pidel_backend
     ports:
       - "8080:8080"
     depends_on:
@@ -14,7 +14,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
     volumes:
-      - /Users/generalsuslik/IdeaProjects/pidel/pidel_backend/src/main/resources/images:/pidel/resources/images
+      - ./pidel_backend/src/main/resources/images:/pidel/resources/images
   db:
     image: postgres:15-alpine
     container_name: postgres_db_pidel
@@ -27,7 +27,7 @@ services:
     ports:
       - "5432:5432"
   pidel_payment:
-    build: ../pidel_payment
+    build: pidel_payment
     depends_on:
       kafka:
         condition: service_healthy
