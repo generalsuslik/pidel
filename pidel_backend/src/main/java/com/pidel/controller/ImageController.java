@@ -17,9 +17,9 @@ public class ImageController {
 
     private final ImageService imageService;
 
-    @PostMapping("")
-    public ResponseEntity<?> createImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
-        var image = imageService.saveImageToStorage(imageFile, "pizzas");
+    @PostMapping("/{pizzaTitle}")
+    public ResponseEntity<?> createImage(@PathVariable String pizzaTitle, @RequestParam("image") MultipartFile imageFile) throws IOException {
+        var image = imageService.saveImageToStorage(pizzaTitle, imageFile, "pizzas");
         return ResponseEntity.ok(image);
     }
 

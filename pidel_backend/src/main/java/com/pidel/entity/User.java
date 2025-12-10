@@ -32,6 +32,9 @@ public class User implements UserDetails {
     @Column(name = "bonuses")
     private Integer bonuses;
 
+    @Column(name = "address")
+    private String address;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "user_roles",

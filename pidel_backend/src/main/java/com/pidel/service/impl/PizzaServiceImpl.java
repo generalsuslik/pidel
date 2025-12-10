@@ -60,7 +60,7 @@ public class PizzaServiceImpl implements PizzaService {
         if (request.getImageFile() == null) {
             pizzaBuilder.image(imageService.getDefaultImageData());
         } else {
-            var image = imageService.saveImageToStorage(request.getImageFile(), "/pizza");
+            var image = imageService.saveImageToStorage(request.getName(), request.getImageFile(), "/pizza");
             pizzaBuilder.image(image);
         }
 
@@ -79,7 +79,7 @@ public class PizzaServiceImpl implements PizzaService {
                     pizzaToUpdate.setPrice(request.getPrice() == null ? pizzaToUpdate.getPrice() : request.getPrice());
                     pizzaToUpdate.setPizzaSizes(request.getPizzaSizes() == null ? pizzaToUpdate.getPizzaSizes() : pizzaSizeService.findBySizes(request.getPizzaSizes()));
                     try {
-                        pizzaToUpdate.setImage(request.getImageFile() == null ? pizzaToUpdate.getImage() : imageService.saveImageToStorage(request.getImageFile(), "/pizza"));
+                        pizzaToUpdate.setImage(request.getImageFile() == null ? pizzaToUpdate.getImage() : imageService.saveImageToStorage(request.getName(), request.getImageFile(), "/pizza"));
                     } catch (IOException e) {
                         throw new RuntimeException("Failed to save image for update");
                     }

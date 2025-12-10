@@ -6,8 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 public interface ImageService {
-    Image saveImageToStorage(MultipartFile imageFile, String service) throws IOException;
-    Image saveImageToStorage(MultipartFile imageFile, String service, boolean isDefault) throws IOException;
+    Image saveImageToStorage(String pizzaTitle, MultipartFile imageFile, String service) throws IOException;
     Image getImageData(String imageTitle);
     Image getImageDataById(Long imageId);
     Image getDefaultImageData();

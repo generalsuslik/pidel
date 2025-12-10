@@ -21,6 +21,9 @@ public class Image {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "pizza_name")
+    private String pizzaName;
+
     @Column(name = "type")
     private String type;
 

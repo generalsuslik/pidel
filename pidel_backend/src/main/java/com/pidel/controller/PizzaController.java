@@ -30,7 +30,7 @@ public class PizzaController {
     @Operation(
             summary = "Returns pizza with id = pizzaId"
     )
-    public Pizza getPizza(@PathVariable("pizzaId") Long pizzaId) {
+    public Pizza getPizza(@PathVariable Long pizzaId) {
         return pizzaService.findById(pizzaId);
     }
 
@@ -49,7 +49,7 @@ public class PizzaController {
     @Operation(
             summary = "Updates pizza. Returns updated pizza"
     )
-    public Pizza updatePizza(@PathVariable("pizzaId") Long pizzaId, @ModelAttribute PizzaDto request) {
+    public Pizza updatePizza(@PathVariable Long pizzaId, @ModelAttribute PizzaDto request) {
         return pizzaService.updatePizza(pizzaId, request);
     }
 
@@ -68,7 +68,7 @@ public class PizzaController {
     @Operation(
             summary = "Deletes pizza with id = {pizzaId}"
     )
-    public void deletePizza(@PathVariable("pizzaId") Long pizzaId) {
+    public void deletePizza(@PathVariable Long pizzaId) {
         pizzaService.deletePizza(pizzaId);
     }
 }

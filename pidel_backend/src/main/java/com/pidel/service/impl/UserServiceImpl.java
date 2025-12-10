@@ -118,4 +118,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 user.getAuthorities()
         );
     }
+
+    @Override
+    public String getAddress(String username) {
+        User user = userRepository
+                .findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getAddress() == null) {
+            throw new RuntimeException("Address is null");
+        }
+        return user.getAddress();
+    }
 }
