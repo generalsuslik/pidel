@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class PizzaSizeServiceImpl implements PizzaSizeService {
+
     private final PizzaSizeRepository pizzaSizeRepository;
 
     @Override

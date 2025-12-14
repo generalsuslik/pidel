@@ -36,7 +36,7 @@ public class ImageServiceImpl implements ImageService {
         UUID uuidPart = UUID.randomUUID();
         String imageTitle = uuidPart + "_" + imageFile.getOriginalFilename();
         String imageDirectory = IMAGE_FILE_PATH + (isDefault ? "/default/" : "/") + service;
-        String imagePath =  imageDirectory + "/ " + imageTitle;
+        String imagePath =  imageDirectory + "/" + imageTitle;
         String imageUrl = BASE_URL + "/images" + (isDefault ? "/default/" : "/") + imageTitle;
 
         var image = Image.builder()

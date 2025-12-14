@@ -8,8 +8,8 @@ import com.pidel.service.ImageService;
 import com.pidel.service.PizzaService;
 import com.pidel.service.PizzaSizeService;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +17,15 @@ import java.io.IOException;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Slf4j
 public class PizzaServiceImpl implements PizzaService {
 
-    PizzaRepository pizzaRepository;
-    PizzaSizeService pizzaSizeService;
-    ImageService imageService;
+    private final PizzaRepository pizzaRepository;
+    private final PizzaSizeService pizzaSizeService;
+    private final ImageService imageService;
 
-    IngredientMapper ingredientMapper;
+    private final IngredientMapper ingredientMapper;
 
     @Override
     public List<Pizza> findAll() {
@@ -60,7 +60,7 @@ public class PizzaServiceImpl implements PizzaService {
         if (request.getImageFile() == null) {
             pizzaBuilder.image(imageService.getDefaultImageData());
         } else {
-            var image = imageService.saveImageToStorage(request.getName(), request.getImageFile(), "/pizza");
+            var image = imageService.saveImageToStorage(request.getName(), request.getImageFile(), "pizza");
             pizzaBuilder.image(image);
         }
 

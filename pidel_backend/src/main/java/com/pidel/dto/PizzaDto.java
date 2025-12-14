@@ -1,11 +1,13 @@
 package com.pidel.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Builder
 @Data
 public class PizzaDto {
     private String name;

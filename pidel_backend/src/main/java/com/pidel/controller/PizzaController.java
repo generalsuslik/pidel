@@ -60,7 +60,7 @@ public class PizzaController {
     @Operation(
             summary = "Updates pizza details (JSON). Returns updated pizza"
     )
-    public Pizza updatePizzaJson(@PathVariable("pizzaId") Long pizzaId, @RequestBody PizzaDto request) {
+    public Pizza updatePizzaJson(@PathVariable Long pizzaId, @RequestBody PizzaDto request) {
         return pizzaService.updatePizza(pizzaId, request);
     }
 
