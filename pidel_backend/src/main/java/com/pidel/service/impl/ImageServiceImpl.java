@@ -84,11 +84,15 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void deleteImage(String imageTitle) throws IOException {
+        log.info("Deleting image {}", imageTitle);
         Image image = getImageData(imageTitle);
         Path imagePath = Path.of(image.getImagePath());
         if (Files.exists(imagePath)) {
             Files.delete(imagePath);
             imageRepository.delete(image);
+            log.info("Successfully deleted image {}", imagePath);
+        } else {
+            log.info("No such file: {}", imagePath);
         }
     }
 }

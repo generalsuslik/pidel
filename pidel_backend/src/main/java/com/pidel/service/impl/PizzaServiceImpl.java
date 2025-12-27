@@ -102,6 +102,12 @@ public class PizzaServiceImpl implements PizzaService {
     @Override
     public void deletePizza(Long id) {
         log.info("Deleting pizza with id: {}", id);
+        try {
+            imageService.deleteImage(findById(id).getImage().getTitle());
+        } catch (IOException e) {
+            log.info("Failed to delete image {}", e.toString());
+            return;
+        }
         pizzaRepository.deleteById(id);
     }
 }
