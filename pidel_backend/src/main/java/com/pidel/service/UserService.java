@@ -13,8 +13,6 @@ public interface UserService {
     UserDto findByUsername(String username);
     User createUser(RegistrationUserDto userDto);
     User createAdmin(RegistrationUserDto userDto);
-    UserDto updateUser(Long id, UserDto userDto);
-    UserDto addRole(Long userId, Long roleId);
     void deleteUser(Long id);
     UserDetails loadUserByUsername(String username);
     String getAddress(String username);
